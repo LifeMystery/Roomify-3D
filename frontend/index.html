@@ -1,43 +1,25 @@
-<!-- frontend/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Roomify 3D MVP</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <title>Roomify-3D Image Upload MVP</title>
   <style>
     body { font-family: sans-serif; text-align: center; margin: 50px; }
-    model-viewer { width: 300px; height: 300px; border: 1px solid #ccc; margin-top: 20px; }
+    img { width: 300px; height: auto; border: 1px solid #ccc; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h1>Seller Upload</h1>
+  <h1>Upload a Product Image</h1>
   <input type="file" id="fileInput">
-  <button id="uploadBtn">Upload & Generate 3D</button>
+  <button id="uploadBtn">Upload & Preview</button>
 
-  <h2>3D Preview / AR View</h2>
-<!-- Test 3D model to make sure frontend works -->
-<!-- <model-viewer id="modelViewer" 
-              src="https://modelviewer.dev/shared-assets/models/Chair.glb"
-              alt="3D Chair"
-              ar ar-modes="webxr scene-viewer quick-look"
-              camera-controls auto-rotate
-              style="width:300px; height:300px;">
-</model-viewer> -->
-
-  <model-viewer id="modelViewer" 
-              src="https://modelviewer.dev/shared-assets/models/Chair.glb"
-              alt="3D Chair"
-              ar ar-modes="webxr scene-viewer quick-look"
-              camera-controls auto-rotate
-              style="width:300px; height:300px;">
-</model-viewer>
-
+  <h2>Preview</h2>
+  <img id="preview" alt="Uploaded Image Preview">
 
   <script>
     const uploadBtn = document.getElementById('uploadBtn');
     const fileInput = document.getElementById('fileInput');
-    const modelViewer = document.getElementById('modelViewer');
+    const preview = document.getElementById('preview');
 
     uploadBtn.addEventListener('click', async () => {
       if (!fileInput.files.length) return alert('Select a file first');
@@ -52,11 +34,10 @@
         });
 
         const data = await res.json();
-
         if (data.success) {
-          modelViewer.src = data.modelUrl;
+          preview.src = data.modelUrl; // show uploaded image
         } else {
-          alert('Upload or 3D generation failed');
+          alert('Upload failed');
         }
       } catch (err) {
         console.error(err);
