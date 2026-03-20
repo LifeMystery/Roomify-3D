@@ -1,25 +1,35 @@
+// backend/server.js (updated)
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
-app.use(express.static('uploads')); // serve uploaded files
 
-// Configure multer for file uploads
+// ensure uploads folder exists
+if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
+
+// serve uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// serve frontend folder
+app.use('/', express.static(path.join(__dirname, '../frontend')));
+
+// configure multer
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
+  destination: (req, file, cb) => cb(null, 'uploads'),
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
 });
 const upload = multer({ storage });
 
-// Endpoint for uploading product image
+// upload endpoint
 app.post('/upload', upload.single('product'), (req, res) => {
   if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
-  // Return a placeholder 3D model (here we just return the image as a "model")
-  const fileUrl = `http://localhost:3000/${req.file.filename}`;
-  res.json({ success: true, modelUrl: fileUrl });
+  // URL now points to /uploads/filename
+  res.json({ success: true, modelUrl: `/uploads/${req.file.filename}` });
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
