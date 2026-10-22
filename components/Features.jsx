@@ -2,8 +2,8 @@ export default function Features({ onUploadPhoto }) {
   return (
     <section id="features">
       <div className="section-inner features">
-        <h2>See It in Action</h2>
-        <p className="subtitle">Place the 3D object in your space</p>
+        <h2>Why It Works</h2>
+        <p className="subtitle">A card in the seller’s photos is the ruler</p>
 
         <div className="features-grid">
           <div className="feature-card">
@@ -13,8 +13,8 @@ export default function Features({ onUploadPhoto }) {
                 <path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
               </svg>
             </div>
-            <h3>Real-Time View</h3>
-            <p>See your object placed instantly in your environment</p>
+            <h3>True Scale</h3>
+            <p>Every bank, ID and Smart Shopper card is 85.6 × 54 mm, so it sets the scale</p>
           </div>
 
           <div className="feature-card">
@@ -23,8 +23,8 @@ export default function Features({ onUploadPhoto }) {
                 <path d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
               </svg>
             </div>
-            <h3>Move &amp; Resize</h3>
-            <p>Drag and scale your 3D model anywhere in the scene</p>
+            <h3>In Your Room</h3>
+            <p>Spin the 3D item, then see it through your phone camera at real scale</p>
           </div>
 
           <div className="feature-card">
@@ -34,19 +34,19 @@ export default function Features({ onUploadPhoto }) {
               </svg>
             </div>
             <h3>Perfect Fit</h3>
-            <p>Verify dimensions and styling before you buy</p>
+            <p>Measure your gap and see exactly how many cm are left</p>
           </div>
         </div>
 
         <div className="cta-block">
           <h3>Get Started Today!</h3>
-          <p>Upload your first photo and create a 3D model in seconds.</p>
+          <p>List your first item in under a minute.</p>
           <button
             className="btn-primary"
             style={{ fontSize: '16px', padding: '14px 32px' }}
             onClick={onUploadPhoto}
           >
-            Upload Your Photo
+            List an Item
           </button>
         </div>
       </div>

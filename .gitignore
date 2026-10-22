@@ -23,3 +23,6 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# local dev uploads
+public/uploads/

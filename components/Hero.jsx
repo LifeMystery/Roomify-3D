@@ -3,17 +3,17 @@ export default function Hero({ onUploadPhoto, onWatchDemo }) {
     <section id="home">
       <div className="section-inner hero">
         <div className="hero-text">
-          <h1>Turn Photos Into<br />3D Models</h1>
+          <h1>See If It Fits<br />Before You Buy</h1>
           <p>
-            See how objects fit in your space in real-time.<br />
-            Upload any photo and watch the magic happen.
+            Sellers snap the front, side and top with any bank, ID or Smart Shopper<br />
+            card as a ruler. Buyers see it in 3D, at real size, in their own room.
           </p>
           <div className="hero-actions">
             <button className="btn-primary" onClick={onUploadPhoto}>
-              Upload a Photo
+              Sell an Item
             </button>
             <button className="btn-outline" onClick={onWatchDemo}>
-              Watch Demo
+              How It Works
             </button>
           </div>
         </div>
