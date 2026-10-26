@@ -1,18 +1,22 @@
 import { NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
-import { put } from '@vercel/blob';
+import { put, BlobError } from '@vercel/blob';
 
 const MAX_BYTES = 10 * 1024 * 1024;
 const MAX_MODEL_BYTES = 20 * 1024 * 1024;
 const ALLOWED_TYPES = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp' };
 
-// Production: Vercel Blob (set BLOB_READ_WRITE_TOKEN). Local dev: public/uploads,
-// which only works under `next dev` — files written at runtime are not served by `next start`.
+// Production: Vercel Blob, via BLOB_READ_WRITE_TOKEN or (newer stores) BLOB_STORE_ID + Vercel's OIDC token.
+// Local dev: public/uploads, which only works under `next dev` — files written at runtime are not served by `next start`.
 async function store(filename, buffer, contentType) {
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID) {
     const blob = await put(`items/${filename}`, buffer, { access: 'public', contentType });
     return blob.url;
+  }
+  // Vercel's filesystem is read-only, so without Blob there is nowhere to save.
+  if (process.env.VERCEL) {
+    throw new Error('Storage is not set up: connect a Public Blob store to this project, then redeploy.');
   }
   const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
   await mkdir(uploadsDir, { recursive: true });
@@ -77,6 +81,9 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+    const message = error instanceof BlobError || error.message?.startsWith('Storage is not set up')
+      ? `Upload storage error: ${error.message}`
+      : 'Server error';
+    return NextResponse.json({ success: false, message }, { status: 500 });
   }
 }
