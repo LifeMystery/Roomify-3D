@@ -1,7 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { CARD_EDGES, pxPerCmFromCard, rectFromPoints } from '@/lib/card';
+import { CARD_EDGES, CARD_MM, pxPerCmFromCard, rectFromPoints } from '@/lib/card';
+
+// A box no bigger than ~1.5 cards means the corners of the card were tapped, not the item.
+function looksLikeCard(rect, pxPerCm) {
+  return Math.max(rect.w, rect.h) < (CARD_MM.long / 10) * pxPerCm * 1.5;
+}
 
 // Seller-side measuring: tap one card edge, then two opposite corners of the item.
 // Reports the item's box in photo pixels plus its size in cm along the photo's x / y axes.
@@ -26,6 +31,7 @@ export default function CardMeasure({ file, axisLabels, onMeasured }) {
     if (card.length !== 2 || box.length !== 2) return onMeasured(null);
     const pxPerCm = pxPerCmFromCard(card[0], card[1], cardEdge);
     const rect = rectFromPoints(box[0], box[1]);
+    if (looksLikeCard(rect, pxPerCm)) return onMeasured(null);
     onMeasured({
       rect,
       xCm: Math.round((rect.w / pxPerCm) * 10) / 10,
@@ -63,6 +69,14 @@ export default function CardMeasure({ file, axisLabels, onMeasured }) {
   const dot = natural ? natural.w / 100 : 0;
   const box = boxPts.length === 2 ? rectFromPoints(boxPts[0], boxPts[1]) : null;
   const pxPerCm = cardPts.length === 2 ? pxPerCmFromCard(cardPts[0], cardPts[1], edge) : null;
+  const tooSmall = box && pxPerCm && looksLikeCard(box, pxPerCm);
+
+  let hint;
+  if (cardPts.length < 2) hint = `Step 1 of 2: Tap ${cardPts.length ? 'the other' : 'one'} end of one card edge`;
+  else if (boxPts.length === 0) hint = 'Card set ✓  Step 2 of 2: Now tap the TOP-LEFT corner of the whole item (not the card)';
+  else if (boxPts.length === 1) hint = 'Now tap the BOTTOM-RIGHT corner of the whole item';
+  else if (tooSmall) hint = 'That box is only the size of the card. Tap again around the whole item — top-left, then bottom-right.';
+  else hint = 'Done ✓  The blue box should cover the whole item. Tap again to redraw it.';
 
   return (
     <div className="measure">
@@ -76,11 +90,7 @@ export default function CardMeasure({ file, axisLabels, onMeasured }) {
           <button type="button" className="btn-ghost" onClick={redoCard}>Re-mark card</button>
         )}
       </div>
-      <p className="fit-hint">
-        {cardPts.length < 2
-          ? 'Tap both ends of one card edge'
-          : 'Tap two opposite corners of the item (top-left, then bottom-right)'}
-      </p>
+      <p className={`fit-hint${tooSmall ? ' fit-bad' : ''}`}>{hint}</p>
 
       <div className="fit-stage">
         {url && <img src={url} alt="Item view" onLoad={(e) => setNatural({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })} />}
@@ -117,7 +127,7 @@ export default function CardMeasure({ file, axisLabels, onMeasured }) {
         )}
       </div>
 
-      {box && pxPerCm && (
+      {box && pxPerCm && !tooSmall && (
         <p className="fit-readout">
           {axisLabels[0]}: {(box.w / pxPerCm).toFixed(1)} cm · {axisLabels[1]}: {(box.h / pxPerCm).toFixed(1)} cm
         </p>
