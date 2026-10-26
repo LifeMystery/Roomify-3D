@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { CARD_EDGES, distance, pxPerCmFromCard } from '@/lib/card';
 
 const STEPS = {
-  calibrate: 'Tap both ends of one card edge',
-  place: 'Drag the item to where it would stand',
-  measure: 'Tap both ends of the gap you want to fill',
+  calibrate: 'Step 1: Tap both ends of one card edge',
+  place: 'Step 2: The item is drawn at real size on your card — drag it to where it would stand. Then press "Measure gap".',
+  measure: 'Step 3: Tap both ends of the space you want to fill (e.g. wall to cupboard)',
 };
 
 export default function FitInRoom({ item }) {
@@ -153,7 +153,11 @@ export default function FitInRoom({ item }) {
                   </button>
                 ))}
               </div>
-              <p className="fit-hint">{STEPS[mode]}</p>
+              <p className="fit-hint">
+                {mode !== 'calibrate' && !(widthCm > 0 && heightCm > 0)
+                  ? 'Enter the item width and height above so it can be drawn at real size.'
+                  : STEPS[mode]}
+              </p>
 
               <div className="fit-stage">
                 <img src={roomUrl} alt="Your room" onLoad={handleImageLoad} />
