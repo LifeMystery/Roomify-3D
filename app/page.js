@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import HowItWorks from '@/components/HowItWorks';
 import TransformSection from '@/components/TransformSection';
 import FitInRoom from '@/components/FitInRoom';
 import Features from '@/components/Features';
@@ -23,6 +24,7 @@ export default function Home() {
     <>
       <Navbar onGetStarted={openModal} />
       <Hero onUploadPhoto={openModal} onWatchDemo={scrollToHowItWorks} />
+      <HowItWorks onSell={openModal} />
       <TransformSection item={item} />
       <FitInRoom item={item} />
       <Features onUploadPhoto={openModal} />

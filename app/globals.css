@@ -610,6 +610,59 @@ section:nth-child(even) { background: #f9fafb; }
 .modal .view-hint { margin-bottom: 12px; color: #374151; }
 .measure { margin-top: 12px; }
 
+/* ── How it works tutorial ── */
+.tutorial { text-align: center; }
+.tutorial h2 { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
+.tutorial .subtitle { font-size: 16px; color: #6b7280; margin-bottom: 28px; }
+.tutorial-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 16px; }
+.tutorial-tabs .btn-ghost { font-size: 16px; padding: 12px 24px; }
+.tutorial-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; font-size: 14px; color: #374151; margin-bottom: 32px; }
+.tutorial-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+
+.tutorial-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+.tutorial-step {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+.tutorial-picture { padding: 12px 12px 0; }
+.tutorial-picture svg { width: 100%; height: auto; display: block; }
+.tutorial-body { position: relative; padding: 16px 20px 20px 64px; }
+.tutorial-num {
+  position: absolute;
+  left: 20px;
+  top: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tutorial-body h3 { font-size: 17px; font-weight: 700; margin: 5px 0 8px; }
+.tutorial-body p { font-size: 15px; line-height: 1.6; color: #374151; }
+.tutorial-tip, .tutorial-warn { margin-top: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px !important; }
+.tutorial-tip { background: #eff6ff; }
+.tutorial-warn { background: #fee2e2; color: #991b1b !important; }
+
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .tutorial h2 { font-size: 28px; }
+  .tutorial-steps { grid-template-columns: 1fr; }
+}
+
 /* ── 3D viewer ── */
 .model-display.has-model { height: 360px; background: #f3f4f6; }
 .ar-button { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); }

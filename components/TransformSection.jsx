@@ -6,7 +6,7 @@ export default function TransformSection({ item }) {
   };
 
   return (
-    <section id="how-it-works">
+    <section id="listed-item">
       <div className="section-inner transform">
         <h2>Your Listed Item</h2>
         <p className="subtitle">Spin it around, then tap “View in your room” on your phone to see it through your camera at real size</p>

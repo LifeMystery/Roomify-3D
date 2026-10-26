@@ -125,7 +125,7 @@ export default function UploadModal({ isOpen, onClose, onUploadSuccess }) {
         onUploadSuccess(data.item);
         setTimeout(() => {
           handleClose();
-          document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+          document.getElementById('listed-item')?.scrollIntoView({ behavior: 'smooth' });
         }, 1200);
       } else {
         setStatus({ message: data.message || 'Upload failed. Please try again.', type: 'error' });
